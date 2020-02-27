@@ -108,7 +108,7 @@ print(trackLengthList)
 trackTmp = 0.0
 
 # string for the output line
-#tmpLine = ''
+# tmpLine = ''
 
 # open file for writing
 f = open("labels_test.txt", "w")
@@ -120,6 +120,7 @@ for i, j in zip(trackLengthList, trackTitleList):
     trackRegStart = trackTmp
     trackRegEnd = trackRegStart + trackLen
     trackTmp = trackRegEnd
+    # converting to seconds here
     tmpLine = f'{trackRegStart/1000}\t{trackRegEnd/1000}\t{j}\n'
     # write line to file
     f.write(tmpLine)
