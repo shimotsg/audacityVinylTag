@@ -113,7 +113,7 @@ trackTmp = 0.0
 # open file for writing
 f = open("labels_test.txt", "w")
 
-# iterate through the
+# iterate through both lists
 for i, j in zip(trackLengthList, trackTitleList):
     trackLen = float(i)
     trackNam = j
