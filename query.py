@@ -103,20 +103,23 @@ print(trackLengthList)
 
 # vars for track length summation (running total)
 # track length is in milliseconds
-sumAlbum = 0.0
+trackTmp = 0.0
 
 # string for the output line
-tmpLine = ""
+#tmpLine = ''
+
+# open file for writing
+f = open("labels_test.txt", "w")
 
 # iterate through the
 for i in trackLengthList:
-    tmpNum = float(i)
-    tmpLine = sumAlbum + "\t" + (sumAlbum+tmpNum)/1000 + "\n"
-# write line to file
-
-f = open("labels_test.txt", "w")
-
-f.write(tmpLine)
+    trackLen = float(i)
+    trackRegStart = trackTmp
+    trackRegEnd = trackRegStart + trackLen
+    trackTmp = trackRegEnd
+    tmpLine = f'{trackRegStart/1000}\t{trackRegEnd/1000}\n'
+    # write line to file
+    f.write(tmpLine)
 
 # close the txt file
 f.close()
