@@ -45,10 +45,12 @@ recordRTN = musicbrainzngs.browse_recordings(release='d7cb737c-1583-41ba-98c2-35
 print(recordRTN)
 # display all discrete recorded songs
 
-# create the dictionary to hold the track lengths
+# create the dictionary to hold the track lengths and track titles
 trackLengthList = []
+trackTitleList = []
 for track in recordRTN['recording-list']:
     trackLengthList.append(track['length'])
+    trackTitleList.append(track['title'])
 
 print(trackLengthList)
 
@@ -112,12 +114,13 @@ trackTmp = 0.0
 f = open("labels_test.txt", "w")
 
 # iterate through the
-for i in trackLengthList:
+for i, j in zip(trackLengthList, trackTitleList):
     trackLen = float(i)
+    trackNam = j
     trackRegStart = trackTmp
     trackRegEnd = trackRegStart + trackLen
     trackTmp = trackRegEnd
-    tmpLine = f'{trackRegStart/1000}\t{trackRegEnd/1000}\n'
+    tmpLine = f'{trackRegStart/1000}\t{trackRegEnd/1000}\t{j}\n'
     # write line to file
     f.write(tmpLine)
 
