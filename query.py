@@ -3,7 +3,7 @@
 
 import sys
 import musicbrainzngs
-
+import urllib
 
 # create the menu interaction for user input
 # audacity scripting pipeline interaction
@@ -127,3 +127,4 @@ for i, j in zip(trackLengthList, trackTitleList):
 
 # close the txt file
 f.close()
+

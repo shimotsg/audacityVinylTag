@@ -5,7 +5,16 @@
 
 import PyQt5
 from PyQt5 import QtGui
+from PyQt5 import QtWidgets
+from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget
+from PyQt5.QtGui import QIcon
+from PyQt5.QtCore import pyqtSlot
 import sys
+import query
+from PyQt5 import QtXml
+from PyQt5 import QtXmlPatterns
+
+
 
 # uArtist, ok = PyQt5.QInputDialog.getText(self, )
 
@@ -20,12 +29,26 @@ class Window(QtGui.QWindow):
         super(Window, self).__init__()
         self.setGeometry(50, 50, 500, 300)
         self.setTitle("VinylTag")
+        layout = QtWidgets.QFormLayout
+        layout.addChildWidget(layout)
+
+        # self.
         # self.setWindowIcon(QtGui.QIcon('pythonlogo.png'))
+        # populate dropdown with query results
+        queryResults = []
+
         self.show()
 
+
+
+
 app = QtGui.QGuiApplication(sys.argv)
-# window.setGeometry(0, 0, 500, 300)
 GUI = Window()
+
+# loadedQuery  = QtWidgets.
+
+# userQuery = QtXmlPatterns.QXmlQuery
+# userQuery.setQuery('')
+# userQuery.bindVariable("artist", )
+# userQuery.bindVariable("album",)
 sys.exit(app.exec_())
-# name, ok = QtGui.QInputEvent.getText(window, 'Artist and Album',
-# 'Enter album:')
