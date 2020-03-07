@@ -1,3 +1,7 @@
+# 2/27/2020
+# geoffrey shimotsu
+# create dialog windows for user input to filter MBID query
+# and display album choices
 # using example code from qt website
 import sys
 import random
