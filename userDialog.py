@@ -3,16 +3,12 @@
 # create dialog windows for user input to filter MBID query
 # and display album choices
 
-import PyQt5
 from PyQt5 import QtGui
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QMainWindow, QApplication, QWidget
-from PyQt5.QtGui import QIcon
-from PyQt5.QtCore import pyqtSlot
+
 import sys
 import query
-from PyQt5 import QtXml
-from PyQt5 import QtXmlPatterns
 
 
 
@@ -30,7 +26,7 @@ class Window(QtGui.QWindow):
         self.setGeometry(50, 50, 500, 300)
         self.setTitle("VinylTag")
         layout = QtWidgets.QFormLayout
-        layout.addChildWidget(layout)
+        # layout.addChildWidget(layout)
 
         # self.
         # self.setWindowIcon(QtGui.QIcon('pythonlogo.png'))
