@@ -5,30 +5,49 @@
 # using example code from qt website
 import sys
 import random
-from PySide2 import QtCore, QtWidgets, QtGui
+# import query
+from PySide2 import QtWidgets, QtGui
+from PySide2.QtCore import Slot
 
 
 class MyWidget(QtWidgets.QWidget):
     def __init__(self):
         super().__init__()
-
-        self.hello = ["Hallo Welt", "Hei maailma", "Hola Mundo", "Привет мир"]
-
-        self.button = QtWidgets.QPushButton("Click me!")
-        self.text = QtWidgets.QLabel("Hello World")
-        self.text.setAlignment(QtCore.Qt.AlignCenter)
-
+        # set window title and add widgets
+        self.setWindowTitle("VinylTag")
+        # user input boxes to get artist and album strings
+        self.artistIn = QtWidgets.QLineEdit()
+        self.albumIn = QtWidgets.QLineEdit()
+        # button for executing query
+        self.searchButton = QtWidgets.QPushButton("search")
         # set the appearance and order of buttons and boxes
-        self.layout = QtWidgets.QVBoxLayout()
-        self.layout.addWidget(self.text)
-        self.layout.addWidget(self.button)
+        self.layout = QtWidgets.QFormLayout()
+        # instantiate and insert the separate widgets into the layout
+        self.layout.addWidget(QtWidgets.QLabel("artist"))
+        self.layout.addWidget(self.artistIn)
+        self.layout.addWidget(QtWidgets.QLabel("album"))
+        self.layout.addWidget(self.albumIn)
+        self.layout.addWidget(self.searchButton)
         self.setLayout(self.layout)
+        # ties button to function
+        self.searchButton.clicked.connect(self.mbQuery)
+        # self.albums = []
 
-        self.button.clicked.connect(self.magic)
+    # execute query
+    # @Slot()
+    def mbQuery(self):
+        queryArtist = self.artistIn.text()
+        queryAlbum = self.albumIn.text()
 
-    def magic(self):
-        self.text.setText(random.choice(self.hello))
+        albums = []
 
+        albums.append(queryArtist)
+        albums.append(queryAlbum)
+
+        # self.text.setText(random.choice(self.hello))
+        print(albums)
+        print(self.artistIn.text())
+        print(self.albumIn.text())
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
