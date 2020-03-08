@@ -61,8 +61,10 @@ class MainWindow(QtWidgets.QWidget):
         # wat.album = queryAlbum
         # wat.artist = queryArtist
 
-        for i in enumerate(wat.show_choices()):
-            self.text.setText(i['name'])
+        wat.show_choices()
+        for release in wat.MB_albumResult:
+            line = release['name'][0] + release['date'][0]
+            self.text.setText(line)
 
 
 
