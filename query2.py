@@ -7,12 +7,14 @@ import urllib
 
 # create the menu interaction for user input
 # audacity scripting pipeline interaction
-class mbQuery:
+class mbQuery():
     def __init__(self, artist, album):
-        self.uEntryArtist = artist
-        self.uEntryAlbum = album
+        self.uEntryArtist = 'linda ronstadt'
+        self.uEntryAlbum = 'silk purse'
         self.queryID = ''
         self.artistReturns = {}
+        self.trackLengthList = []
+        self.trackTitleList = []
 
         # borrowed authentication necessary for querying MB service
         self.agentAuth = musicbrainzngs.set_useragent(
@@ -20,9 +22,8 @@ class mbQuery:
             "0.1",
             "https://github.com/alastair/python-musicbrainzngs/",
         )
-        # query MB db using hardcoded values and get MB artist id
 
-    def initMBQuery(self, artist, album ):
+    def initMBQuery(self):
         artistsReturns = musicbrainzngs.search_artists(artist=self.uEntryArtist)
 
         # print all the results
@@ -31,11 +32,10 @@ class mbQuery:
 
         # get the MBID_artist
         # here using hardcoded top result regardless of correctness
-
-        queryID = artistsReturns['artist-list'][0]
+        self.queryID = artistsReturns['artist-list'][0]
 
         # this is the returned top MDIB_artist
-        tmp = queryID['id']
+        # tmp = self.queryID['id']
     # #########################################################################
     # TODO: release id is hardcoded
     # take track length dictionary and use to create audacity label track txt file
@@ -44,19 +44,28 @@ class mbQuery:
 
     # get a dictionary of all the recordings using artistid
     # browserecordings returns recordigns linked to an artist or relase with MB artist or release id?
-    recordRTN = musicbrainzngs.browse_recordings(release='d7cb737c-1583-41ba-98c2-356e4531e932')
-    # otherReturns = musicbrainzngs.browse_recordings(tmp)
-    print(recordRTN)
-    # display all discrete recorded songs
+    def getReleaseInfo(self):
+        releases = musicbrainzngs.search_release_groups(self.uEntryAlbum)
+        # returns release group list  with mbid album info first
+        tmp = releases['release-group-list'][0]['id']
 
-    # create the dictionary to hold the track lengths and track titles
-    trackLengthList = []
-    trackTitleList = []
-    for track in recordRTN['recording-list']:
-        trackLengthList.append(track['length'])
-        trackTitleList.append(track['title'])
+        result = musicbrainzngs.get_recording_by_id(tmp)
 
-    print(trackLengthList)
+        # tmp2 = musicbrainzngs.get_release_group_by_id(tmp)
+        # recordRTN = musicbrainzngs.browse_recordings(re)
+        # # recordRTN = musicbrainzngs.browse_recordings(release=self.queryID[0][0])
+        # # otherReturns = musicbrainzngs.browse_recordings(tmp)
+        # print(recordRTN)
+        # # display all discrete recorded songs
+        #
+        # # create the dictionary to hold the track lengths and track titles
+        # # trackLengthList = []
+        # # trackTitleList = []
+        # for track in recordRTN['recording-list']:
+        #     self.trackLengthList.append(track['length'])
+        #     self.trackTitleList.append(track['title'])
+        #
+        # print(self.trackLengthList)
 
 
     # for record in otherReturns['recording-list']:
@@ -108,27 +117,29 @@ class mbQuery:
     # result = musicbrainzngs.get_releases_by_discid(disc.id, includes=["artists", "recordings"])
 
     # vars for track length summation (running total)
-    # track length is in milliseconds
-    trackTmp = 0.0
+
 
     # string for the output line
     # tmpLine = ''
 
-    # open file for writing
-    f = open("labels_test.txt", "w")
+    def writeLblTrackTxt(self):
+        # track length is in milliseconds
+        trackTmp = 0.0
+        # iterate through both lists
+        # open file for writing
+        f = open("labels_test.txt", "w")
 
-    # iterate through both lists
-    for i, j in zip(trackLengthList, trackTitleList):
-        trackLen = float(i)
-        trackNam = j
-        trackRegStart = trackTmp
-        trackRegEnd = trackRegStart + trackLen
-        trackTmp = trackRegEnd
-        # converting to seconds here
-        tmpLine = f'{trackRegStart/1000}\t{trackRegEnd/1000}\t{j}\n'
-        # write line to file
-        f.write(tmpLine)
+        for i, j in zip(self.trackLengthList, self.trackTitleList):
+            trackLen = float(i)
+            trackNam = j
+            trackRegStart = trackTmp
+            trackRegEnd = trackRegStart + trackLen
+            trackTmp = trackRegEnd
+            # converting to seconds here
+            tmpLine = f'{trackRegStart/1000}\t{trackRegEnd/1000}\t{j}\n'
+            # write line to file
+            f.write(tmpLine)
 
-    # close the txt file
-    f.close()
+        # close the txt file
+        f.close()
 

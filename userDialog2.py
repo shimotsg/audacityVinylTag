@@ -7,10 +7,12 @@ import sys
 import random
 # import query
 from PySide2 import QtWidgets, QtGui
-from PySide2.QtCore import Slot
+from PySide2.QtCore import Slot, Qt
+import query3
 
 
-class MyWidget(QtWidgets.QWidget):
+class MainWindow(QtWidgets.QWidget):
+
     def __init__(self):
         super().__init__()
         # set window title and add widgets
@@ -21,39 +23,55 @@ class MyWidget(QtWidgets.QWidget):
         # button for executing query
         self.searchButton = QtWidgets.QPushButton("search")
         # set the appearance and order of buttons and boxes
+        self.text = QtWidgets.QTextBrowser()
+
         self.layout = QtWidgets.QFormLayout()
         # instantiate and insert the separate widgets into the layout
         self.layout.addWidget(QtWidgets.QLabel("artist"))
         self.layout.addWidget(self.artistIn)
+
         self.layout.addWidget(QtWidgets.QLabel("album"))
         self.layout.addWidget(self.albumIn)
         self.layout.addWidget(self.searchButton)
+
+        # results text
+
+        self.layout.addWidget(self.text)
+
         self.setLayout(self.layout)
         # ties button to function
-        self.searchButton.clicked.connect(self.mbQuery)
+        # self.searchButton.clicked.connect(self.call_mb_query())
+        self.searchButton.clicked.connect(self.call_mb_query)
+
+        # self.groupBox = QtWidgets.QGroupBox("groupBox")
+        # self.artistOutText = QtWidgets.QTextBrowser(self.groupBox)
+
+
+
         # self.albums = []
-
+        # self.myQuery = query2.mbQuery
     # execute query
-    # @Slot()
-    def mbQuery(self):
-        queryArtist = self.artistIn.text()
-        queryAlbum = self.albumIn.text()
 
-        albums = []
+    @Slot()
+    def call_mb_query(self):
+        tmp_artistIn = self.artistIn.text()
+        tmp_albumIn = self.albumIn.text()
 
-        albums.append(queryArtist)
-        albums.append(queryAlbum)
+        wat = query3.MB_Query(tmp_artistIn, tmp_albumIn)
+        # wat.album = queryAlbum
+        # wat.artist = queryArtist
 
-        # self.text.setText(random.choice(self.hello))
-        print(albums)
-        print(self.artistIn.text())
-        print(self.albumIn.text())
+        for i in enumerate(wat.show_choices()):
+            self.text.setText(i['name'])
+
+
+
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication([])
 
-    widget = MyWidget()
-    widget.resize(800, 600)
+    widget = MainWindow()
+    widget.resize(400, 400)
     widget.show()
 
     sys.exit(app.exec_())
