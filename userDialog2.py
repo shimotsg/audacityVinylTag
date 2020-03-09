@@ -56,9 +56,11 @@ class MainWindow(QtWidgets.QWidget):
         # self.artistOutText = QtWidgets.QTextBrowser(self.groupBox)
 
         self.master_query = query3.MB_Query(self.artistIn.text(), self.albumIn.text())
+        self.MB_obj = {}
 
     @Slot()
     def call_mb_query(self):
+        self.artistList.clear()
         tmp_artistIn = self.artistIn.text()
         tmp_albumIn = self.albumIn.text()
 
@@ -78,9 +80,10 @@ class MainWindow(QtWidgets.QWidget):
                 self.artistList.addItem(item['name'] + item['disambiguation'])
             self.artistList.addItem(item['name'])
     @Slot()
-    def clicked_album(self):
-        album = self.albumList.itemClicked()
-        self.master_query.MB_releaseID = album['id'][0]
+    def clicked_artist(self):
+        # album = self.albumList.itemClicked()
+        self.master_query.MB_obj = self.artistList.itemClicked()
+        # self.master_query.MB_releaseID = ['id'][0]
 
         print(self.master_query)
         # where 'title' = album in self.albumList:
