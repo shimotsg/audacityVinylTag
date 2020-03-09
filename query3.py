@@ -24,10 +24,10 @@ class MB_Query():
 
         # hafta get the artist id first
         self.MB_artistResult = musicbrainzngs.search_artists(artist=self.artist)
-        queryID = self.MB_artistResult['artist-list'][0]
-        self.MB_artistID = queryID['id']
-        # print(artist_choices)
-        # print(self.MBResult)
-        self.MB_albumResult = musicbrainzngs.browse_recordings(artist=self.MB_artistID)
-        print(self.MB_albumResult)
+
+        # queryID = self.MB_artistResult['artist-list'][0]
+        # self.MB_artistID = queryID['id']
+        #
+        # self.MB_albumResult = musicbrainzngs.browse_recordings(artist=self.MB_artistID)
+        # print(self.MB_albumResult)
 

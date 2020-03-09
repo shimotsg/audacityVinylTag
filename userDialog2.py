@@ -34,9 +34,16 @@ class MainWindow(QtWidgets.QWidget):
         self.layout.addWidget(self.albumIn)
         self.layout.addWidget(self.searchButton)
 
+        # artist results text
+        self.artistList = QtWidgets.QListWidget()
+        self.layout.addWidget(self.artistList)
+
         # results text
-        self.albumList = QtWidgets.QListWidget()
-        self.layout.addWidget(self.albumList)
+        # # album results widget
+        # self.albumList = QtWidgets.QListWidget()
+        # self.layout.addWidget(self.albumList)
+
+
 
         # self.layout.addWidget(self.text)
 
@@ -60,12 +67,16 @@ class MainWindow(QtWidgets.QWidget):
         # wat.artist = queryArtist
 
         wat.show_choices()
-        for item in wat.MB_albumResult['recording-list']:
+        for item in wat.MB_artistResult['artist-list']:
             # line = release['name'][0] + release['date'][0]
             # self.text.setText(line)
             # print(item['title'])
-            self.albumList.addItem(item['title'])
-
+            # self.artistList.addItem(artRet['name'])
+            # self.artistList.addItem(item['disambiguation'])
+            # self.artistList.addItem(item['name'])
+            if 'disambiguation' in item:
+                self.artistList.addItem(item['name'] + item['disambiguation'])
+            self.artistList.addItem(item['name'])
     @Slot()
     def clicked_album(self):
         album = self.albumList.itemClicked()
