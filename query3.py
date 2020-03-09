@@ -7,6 +7,7 @@ class MB_Query():
         self.album = usersAlbum
         self.MB_albumResult = {}
         self.MB_artistResult = {}
+        self.MB_queryResult = {}
         self.MB_artistID = ''
         self.MB_releaseID = ''
         # borrowed authentication necessary for querying MB service
@@ -16,14 +17,20 @@ class MB_Query():
             "https://github.com/alastair/python-musicbrainzngs/",
         )
 
+        self.MB_obj = {}
+
     def show_choices(self):
         # return the top 25 results from MB search using user input string
         # artist_choices = musicbrainzngs.search_artists(artist=self.artist)
         # self.MB_a = musicbrainzngs.
         # self.MBResult = musicbrainzngs.search_releases(self.album)
 
-        # hafta get the artist id first
-        self.MB_artistResult = musicbrainzngs.search_artists(artist=self.artist)
+        # # hafta get the artist id first
+        # self.MB_artistResult = musicbrainzngs.search_artists(artist=self.artist)
+
+        self.MB_queryResult = musicbrainzngs.search_release_groups(artist=self.artist, release=self.album)
+
+        # print(self.MB_queryResult)
 
         # queryID = self.MB_artistResult['artist-list'][0]
         # self.MB_artistID = queryID['id']

@@ -34,59 +34,68 @@ class MainWindow(QtWidgets.QWidget):
         self.layout.addWidget(self.albumIn)
         self.layout.addWidget(self.searchButton)
 
-        # artist results text
-        self.artistList = QtWidgets.QListWidget()
-        self.layout.addWidget(self.artistList)
-
-        # results text
+        # # artist results text
+        # self.artistList = QtWidgets.QListWidget()
+        # self.layout.addWidget(self.artistList)
+        #
+        # # results text
         # # album results widget
         # self.albumList = QtWidgets.QListWidget()
         # self.layout.addWidget(self.albumList)
 
+        # results text
+        self.resultsList = QtWidgets.QListWidget()
+        self.layout.addWidget(self.resultsList)
 
 
         # self.layout.addWidget(self.text)
 
         self.setLayout(self.layout)
         # ties button to function
-        # self.searchButton.clicked.connect(self.call_mb_query())
         self.searchButton.clicked.connect(self.call_mb_query)
+        # self.artistList.itemClicked.connect(self.clicked_artist)
 
         # self.groupBox = QtWidgets.QGroupBox("groupBox")
         # self.artistOutText = QtWidgets.QTextBrowser(self.groupBox)
 
         self.master_query = query3.MB_Query(self.artistIn.text(), self.albumIn.text())
-        self.MB_obj = {}
 
     @Slot()
     def call_mb_query(self):
-        self.artistList.clear()
-        tmp_artistIn = self.artistIn.text()
-        tmp_albumIn = self.albumIn.text()
+        self.resultsList.clear()
+        # tmp_artistIn = self.artistIn.text()
+        # tmp_albumIn = self.albumIn.text()
 
-        wat = query3.MB_Query(tmp_artistIn, tmp_albumIn)
+        self.master_query = query3.MB_Query(self.artistIn.text(), self.albumIn.text())
         # wat.album = queryAlbum
         # wat.artist = queryArtist
 
-        wat.show_choices()
-        for item in wat.MB_artistResult['artist-list']:
-            # line = release['name'][0] + release['date'][0]
-            # self.text.setText(line)
-            # print(item['title'])
-            # self.artistList.addItem(artRet['name'])
-            # self.artistList.addItem(item['disambiguation'])
-            # self.artistList.addItem(item['name'])
-            if 'disambiguation' in item:
-                self.artistList.addItem(item['name'] + item['disambiguation'])
-            self.artistList.addItem(item['name'])
+        self.master_query.show_choices()
+        for item in self.master_query.MB_queryResult['release-group-list']:
+            self.resultsList.addItem(item['title'])
+        # for item in self.master_query.MB_artistResult['artist-list']:
+        #     # line = release['name'][0] + release['date'][0]
+        #     # self.text.setText(line)
+        #     # print(item['title'])
+        #     # self.artistList.addItem(artRet['name'])
+        #     # self.artistList.addItem(item['disambiguation'])
+        #     # self.artistList.addItem(item['name'])
+        #     if 'disambiguation' in item:
+        #         self.artistList.addItem(item['name'] + item['disambiguation'])
+        #     self.artistList.addItem(item['name'])
+
     @Slot()
     def clicked_artist(self):
         # album = self.albumList.itemClicked()
-        self.master_query.MB_obj = self.artistList.itemClicked()
+        if self.artistList.currentItem() in self.master_query.MB_artistResult['artist-list']:
+            self.master_query.MB_artistID = 'id'
         # self.master_query.MB_releaseID = ['id'][0]
 
+
         print(self.master_query)
-        # where 'title' = album in self.albumList:
+        # use the clicked on name to get list of albums
+        # if self.artistList.currentItem() is 'name' in self.albumList:
+        #     self.master_query.MB_artistID = 'id'
         # self.albums = []
         # self.myQuery = query2.mbQuery
     # # execute query
