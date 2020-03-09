@@ -23,7 +23,7 @@ class MainWindow(QtWidgets.QWidget):
         # button for executing query
         self.searchButton = QtWidgets.QPushButton("search")
         # set the appearance and order of buttons and boxes
-        self.text = QtWidgets.QTextBrowser()
+        # self.text = QtWidgets.QTextBrowser()
 
         self.layout = QtWidgets.QFormLayout()
         # instantiate and insert the separate widgets into the layout
@@ -35,8 +35,10 @@ class MainWindow(QtWidgets.QWidget):
         self.layout.addWidget(self.searchButton)
 
         # results text
+        self.albumList = QtWidgets.QListWidget()
+        self.layout.addWidget(self.albumList)
 
-        self.layout.addWidget(self.text)
+        # self.layout.addWidget(self.text)
 
         self.setLayout(self.layout)
         # ties button to function
@@ -46,11 +48,7 @@ class MainWindow(QtWidgets.QWidget):
         # self.groupBox = QtWidgets.QGroupBox("groupBox")
         # self.artistOutText = QtWidgets.QTextBrowser(self.groupBox)
 
-
-
-        # self.albums = []
-        # self.myQuery = query2.mbQuery
-    # execute query
+        self.master_query = query3.MB_Query(self.artistIn.text(), self.albumIn.text())
 
     @Slot()
     def call_mb_query(self):
@@ -62,11 +60,22 @@ class MainWindow(QtWidgets.QWidget):
         # wat.artist = queryArtist
 
         wat.show_choices()
-        for release in wat.MB_albumResult:
-            line = release['name'][0] + release['date'][0]
-            self.text.setText(line)
+        for item in wat.MB_albumResult['recording-list']:
+            # line = release['name'][0] + release['date'][0]
+            # self.text.setText(line)
+            # print(item['title'])
+            self.albumList.addItem(item['title'])
 
+    @Slot()
+    def clicked_album(self):
+        album = self.albumList.itemClicked()
+        self.master_query.MB_releaseID = album['id'][0]
 
+        print(self.master_query)
+        # where 'title' = album in self.albumList:
+        # self.albums = []
+        # self.myQuery = query2.mbQuery
+    # # execute query
 
 
 if __name__ == "__main__":

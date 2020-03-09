@@ -7,6 +7,8 @@ class MB_Query():
         self.album = usersAlbum
         self.MB_albumResult = {}
         self.MB_artistResult = {}
+        self.MB_artistID = ''
+        self.MB_releaseID = ''
         # borrowed authentication necessary for querying MB service
         self.agentAuth = musicbrainzngs.set_useragent(
             "python-musicbrainzngs-example",
@@ -19,11 +21,13 @@ class MB_Query():
         # artist_choices = musicbrainzngs.search_artists(artist=self.artist)
         # self.MB_a = musicbrainzngs.
         # self.MBResult = musicbrainzngs.search_releases(self.album)
+
         # hafta get the artist id first
         self.MB_artistResult = musicbrainzngs.search_artists(artist=self.artist)
         queryID = self.MB_artistResult['artist-list'][0]
-        tmp = queryID['id']
+        self.MB_artistID = queryID['id']
         # print(artist_choices)
         # print(self.MBResult)
-        recordRTN = musicbrainzngs.browse_recordings(artist=tmp)
-        print(recordRTN)
+        self.MB_albumResult = musicbrainzngs.browse_recordings(artist=self.MB_artistID)
+        print(self.MB_albumResult)
+
