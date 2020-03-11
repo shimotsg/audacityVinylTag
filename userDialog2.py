@@ -19,7 +19,7 @@ class MainWindow(QtWidgets.QWidget):
         self.setWindowTitle("VinylTag")
         # user input boxes to get artist and album strings
         self.artistIn = QtWidgets.QLineEdit()
-        self.albumIn = QtWidgets.QLineEdit()
+        # self.albumIn = QtWidgets.QLineEdit()
         # button for executing query
         self.searchButton = QtWidgets.QPushButton("search")
         # set the appearance and order of buttons and boxes
@@ -30,8 +30,8 @@ class MainWindow(QtWidgets.QWidget):
         self.layout.addWidget(QtWidgets.QLabel("artist"))
         self.layout.addWidget(self.artistIn)
 
-        self.layout.addWidget(QtWidgets.QLabel("album"))
-        self.layout.addWidget(self.albumIn)
+        # self.layout.addWidget(QtWidgets.QLabel("album"))
+        # self.layout.addWidget(self.albumIn)
         self.layout.addWidget(self.searchButton)
 
         # # artist results text
@@ -40,12 +40,12 @@ class MainWindow(QtWidgets.QWidget):
         #
         # # results text
         # # album results widget
-        # self.albumList = QtWidgets.QListWidget()
-        # self.layout.addWidget(self.albumList)
+        self.albumList = QtWidgets.QListWidget()
+        self.layout.addWidget(self.albumList)
 
         # results text
-        self.resultsList = QtWidgets.QListWidget()
-        self.layout.addWidget(self.resultsList)
+        self.trackList = QtWidgets.QListWidget()
+        self.layout.addWidget(self.trackList)
 
 
         # self.layout.addWidget(self.text)
@@ -53,7 +53,8 @@ class MainWindow(QtWidgets.QWidget):
         self.setLayout(self.layout)
         # ties button to function
         self.searchButton.clicked.connect(self.call_mb_query)
-        # self.artistList.itemClicked.connect(self.clicked_artist)
+        # ties clicking result to getting tracklist
+        self.albumList.itemClicked.connect(self.clicked_artist)
 
         # self.groupBox = QtWidgets.QGroupBox("groupBox")
         # self.artistOutText = QtWidgets.QTextBrowser(self.groupBox)
@@ -62,7 +63,8 @@ class MainWindow(QtWidgets.QWidget):
 
     @Slot()
     def call_mb_query(self):
-        self.resultsList.clear()
+        # self.resultsList.clear()
+        self.albumList.clear()
         # tmp_artistIn = self.artistIn.text()
         # tmp_albumIn = self.albumIn.text()
 
@@ -71,8 +73,9 @@ class MainWindow(QtWidgets.QWidget):
         # wat.artist = queryArtist
 
         self.master_query.show_choices()
+        self.master_query.MB_releaseID = self.master_query.MB_queryResult['release-group-list'][0]['id']
         for item in self.master_query.MB_queryResult['release-group-list']:
-            self.resultsList.addItem(item['title'])
+            self.albumList.addItem(item['title'])
         # for item in self.master_query.MB_artistResult['artist-list']:
         #     # line = release['name'][0] + release['date'][0]
         #     # self.text.setText(line)
@@ -87,18 +90,27 @@ class MainWindow(QtWidgets.QWidget):
     @Slot()
     def clicked_artist(self):
         # album = self.albumList.itemClicked()
-        if self.artistList.currentItem() in self.master_query.MB_artistResult['artist-list']:
-            self.master_query.MB_artistID = 'id'
+        # if self.artistList.currentItem() in self.master_query.MB_artistResult['artist-list']:
+        #     self.master_query.MB_artistID = 'id'
         # self.master_query.MB_releaseID = ['id'][0]
 
 
-        print(self.master_query)
+        # use clicked item mbid to get track listing
+        self.trackList.clear()
+
+        self.master_query.show_tracks()
+
+        for item in self.master_query.MB_trackResult['release-group-list']:
+            self.trackList.addItem(item['name'])
+
+
         # use the clicked on name to get list of albums
         # if self.artistList.currentItem() is 'name' in self.albumList:
         #     self.master_query.MB_artistID = 'id'
         # self.albums = []
         # self.myQuery = query2.mbQuery
     # # execute query
+
 
 
 if __name__ == "__main__":

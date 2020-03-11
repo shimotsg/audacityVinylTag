@@ -8,6 +8,7 @@ class MB_Query():
         self.MB_albumResult = {}
         self.MB_artistResult = {}
         self.MB_queryResult = {}
+        self.MB_trackResult = {}
         self.MB_artistID = ''
         self.MB_releaseID = ''
         # borrowed authentication necessary for querying MB service
@@ -38,3 +39,5 @@ class MB_Query():
         # self.MB_albumResult = musicbrainzngs.browse_recordings(artist=self.MB_artistID)
         # print(self.MB_albumResult)
 
+    def show_tracks(self):
+        self.MB_trackResult = musicbrainzngs.browse_recordings(self.MB_releaseID)
