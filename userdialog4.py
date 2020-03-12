@@ -19,7 +19,6 @@ class MainWindow(QtWidgets.QWidget):
         self.setWindowTitle("VinylTag")
         # user input boxes to get artist and album strings
         self.artistIn = QtWidgets.QLineEdit()
-        # self.albumIn = QtWidgets.QLineEdit()
         # button for executing query
         self.searchButton = QtWidgets.QPushButton("search")
         # set the appearance and order of buttons and boxes
@@ -30,16 +29,11 @@ class MainWindow(QtWidgets.QWidget):
         self.layout.addWidget(self.artistIn)
 
         self.layout.addWidget(self.searchButton)
-
-        # # artist results text
-        # self.artistList = QtWidgets.QListWidget()
-        # self.layout.addWidget(self.artistList)
-        #
         # # results text
         # # album results widget
         self.albumList = QtWidgets.QListWidget()
         self.layout.addWidget(self.albumList)
-
+        # get tracks button
         self.get_tracks_button = QtWidgets.QPushButton("get tracks")
         self.layout.addWidget(self.get_tracks_button)
 
@@ -57,6 +51,11 @@ class MainWindow(QtWidgets.QWidget):
 
         self.get_tracks_button.clicked.connect(self.call_mb_release_id)
 
+        self.write_label_track_button = QtWidgets.QPushButton("write label track txt")
+        self.layout.addWidget(self.write_label_track_button)
+
+        self.write_label_track_button.clicked.connect(self.write_label_track)
+
     @Slot()
     def call_mb_query(self):
         self.albumList.clear()
@@ -65,7 +64,7 @@ class MainWindow(QtWidgets.QWidget):
 
         self.master_query.with_input_browse_recordings()
         # hardcoded to first value
-        self.master_query.MB_releaseID = self.master_query.MB_queryResult['release-list'][0]['id']
+        # self.master_query.MB_releaseID = self.master_query.MB_queryResult['release-list'][0]['id']
 
         for item in self.master_query.MB_queryResult['release-list']:
             QtWidgets.QListWidgetItem(item['title'], self.albumList)
@@ -87,12 +86,10 @@ class MainWindow(QtWidgets.QWidget):
         for item in self.master_query.MB_track_listing['recording-list']:
             QtWidgets.QListWidgetItem(item['title'], self.trackList)
 
-
-        # if self.album is 'title' in self.master_query.MB_queryResult['release-list']:
-        #     self.master_query.release_mbid = 'id'
-        #     self.master_query.getTracks()
-
-
+    @Slot()
+    def write_label_track(self):
+        print('hello')
+        self.master_query.write_label_track()
 
 
 if __name__ == "__main__":

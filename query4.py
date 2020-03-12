@@ -29,6 +29,32 @@ class mbQuery:
         for items in self.MB_queryResult['release-list']:
             if items.get('title') == self.album:
                 self.release_mbid = items.get('id')
-
         self.MB_track_listing = musicbrainzngs.browse_recordings(release=self.release_mbid)
-        print('hello')
+
+    def write_label_track(self):
+        label_ver = 0
+        label_text = f"label_text{label_ver}.txt"
+        trackLengthList = []
+        trackTitleList = []
+        for track in self.MB_track_listing['recording-list']:
+            trackLengthList.append(track['length'])
+            trackTitleList.append(track['title'])
+        # vars for track length summation (running total)
+        # track length is in milliseconds
+        trackTmp = 0.0
+        # open file for writing
+        f = open(label_text, "w")
+        # iterate through both lists
+        for i, j in zip(trackLengthList, trackTitleList):
+            trackLen = float(i)
+            trackNam = j
+            trackRegStart = trackTmp
+            trackRegEnd = trackRegStart + trackLen
+            trackTmp = trackRegEnd
+            # converting to seconds here
+            tmpLine = f'{trackRegStart / 1000}\t{trackRegEnd / 1000}\t{j}\n'
+            # write line to fil
+            f.write(tmpLine)
+
+        # close the txt file
+        f.close()
