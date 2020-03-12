@@ -40,6 +40,9 @@ class MainWindow(QtWidgets.QWidget):
         self.albumList = QtWidgets.QListWidget()
         self.layout.addWidget(self.albumList)
 
+        self.get_tracks_button = QtWidgets.QPushButton("get tracks")
+        self.layout.addWidget(self.get_tracks_button)
+
         # results text
         self.trackList = QtWidgets.QListWidget()
         self.layout.addWidget(self.trackList)
@@ -52,6 +55,8 @@ class MainWindow(QtWidgets.QWidget):
 
         self.master_query = query4.mbQuery(self.artistIn.text())
 
+        self.get_tracks_button.clicked.connect(self.call_mb_release_id)
+
     @Slot()
     def call_mb_query(self):
         self.albumList.clear()
@@ -59,13 +64,34 @@ class MainWindow(QtWidgets.QWidget):
         self.master_query = query4.mbQuery(self.artistIn.text())
 
         self.master_query.with_input_browse_recordings()
+        # hardcoded to first value
         self.master_query.MB_releaseID = self.master_query.MB_queryResult['release-list'][0]['id']
+
         for item in self.master_query.MB_queryResult['release-list']:
-            self.albumList.addItem(item['title'])
+            QtWidgets.QListWidgetItem(item['title'], self.albumList)
 
     @Slot()
     def clicked_release(self):
         self.trackList.clear()
+
+        # set the album search string
+        temp = self.albumList.selectedItems()
+        self.master_query.album = temp[0].data(0)
+
+        print(self.master_query.album)
+
+    @Slot()
+    def call_mb_release_id(self):
+
+        self.master_query.show_tracks()
+        for item in self.master_query.MB_track_listing['recording-list']:
+            QtWidgets.QListWidgetItem(item['title'], self.trackList)
+
+
+        # if self.album is 'title' in self.master_query.MB_queryResult['release-list']:
+        #     self.master_query.release_mbid = 'id'
+        #     self.master_query.getTracks()
+
 
 
 
